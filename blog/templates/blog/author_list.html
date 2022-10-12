@@ -6,7 +6,15 @@
     </head>
     <body>
         
-        {{ authors }}
+        <h1><em>Авторы:</em></h1>
+
+        <h2><em>
+            
+            {% for post in authors %}
+    {{ post }}
+{% endfor %}
+
+        </em></h2>
 
     </body>
 </html>

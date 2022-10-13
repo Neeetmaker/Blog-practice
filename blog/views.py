@@ -12,3 +12,9 @@ def post_list(request):
 def author_list(request):
     authors = User.objects.all()
     return render(request, 'blog/author_list.html', {'authors': authors})
+
+"""
+def author_list(request):
+    authors = User.get_full_name(self)
+    return render(request, 'blog/author_list.html', {'authors': authors})
+"""

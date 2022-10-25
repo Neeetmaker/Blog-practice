@@ -13,5 +13,25 @@
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
+
+<!-- блоки для комметариев --> 
+
+    <div>
+        <p>тут должны показываться комментарии</p>
+        {% for comment in comments %}
+           {{ comment.text }}
+        {% endfor %}
+    </div>
+    
+    <h2>Оставить комментарий</h2>
+
+    <div>
+        <p>тут должна быть форма для комментарии</p>
+        <form method="POST">{% csrf_token %}
+            {{ comments.as_p }}
+            <button type="submit" class="save btn btn-default">Отправить</button>
+        </form>
+    </div>
+
 {% endblock %}
 

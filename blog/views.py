@@ -4,6 +4,7 @@ from .models import Post
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
+from .forms import CommForm
 from django.shortcuts import redirect
 
 def post_list(request):
@@ -44,3 +45,13 @@ def post_edit(request, pk):
 def author_list(request):
     authors = User.objects.all()
     return render(request, 'blog/author_list.html', {'authors': authors})
+
+
+
+
+# Код для комментариев ниже
+
+def comm_list(request):
+    if request.method == "POST":
+        form = CommForm(request.POST)
+    return render(request, 'blog/post_detail', {'comments': comments})

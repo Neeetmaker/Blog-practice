@@ -18,8 +18,8 @@
 
     <div>
         <p>тут должны показываться комментарии</p>
-        {% for comment in comments %}
-           {{ comment.text }}
+        {% for comment in comment %}
+           <div style="color: red">{{ comment.text }}</div>
         {% endfor %}
     </div>
     
@@ -27,8 +27,8 @@
 
     <div>
         <p>тут должна быть форма для комментарии</p>
-        <form method="POST">{% csrf_token %}
-            {{ comments.as_p }}
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ comment_form }}
             <button type="submit" class="save btn btn-default">Отправить</button>
         </form>
     </div>

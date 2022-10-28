@@ -25,6 +25,7 @@
     
     <h2>Оставить комментарий</h2>
 
+{% if user.is_authenticated %}
     <div>
         <p>тут должна быть форма для комментарии</p>
         <form method="POST" class="post-form">{% csrf_token %}
@@ -32,6 +33,7 @@
             <button type="submit" class="save btn btn-default">Отправить</button>
         </form>
     </div>
+{% endif %}
 
 {% endblock %}
 

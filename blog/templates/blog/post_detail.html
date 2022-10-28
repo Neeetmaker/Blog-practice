@@ -17,9 +17,12 @@
 <!-- блоки для комметариев --> 
 
     <div>
-        <p>тут должны показываться комментарии</p>
+        <h2>Комментарии:</h2>
         {% for comment in comment %}
-           <div style="color: red">{{ comment.text }}</div>
+           <div>{{ comment.author.get_full_name }} оставил комментарий:</div>
+           <div>{{ comment.text }}</div>
+           <div>{{ comment.published_date }}</div>
+           <hr>
         {% endfor %}
     </div>
     

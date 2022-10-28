@@ -18,11 +18,12 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    comment = Comm.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    comment = post.comm_set.filter(published_date__lte=timezone.now()).order_by('-published_date')
     if request.method == "POST":
         comment_form = CommForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
+            comment.post = Post.objects.get(pk=post.pk)
             comment.author = request.user
             comment.published_date = timezone.now()
             comment.save()

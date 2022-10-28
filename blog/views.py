@@ -19,15 +19,14 @@ def post_list(request):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comment = Comm.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-
-if request.method == "POST":
-    comment_form = CommForm(request.POST)
-    if comment_form.is_valid():
-        comment = form.save(commit=False)
-        comment.author = request.user
-        comment.published_date = timezone.now()
-        comment.save()
-        return redirect('post_detail', pk=post.pk)
+    if request.method == "POST":
+        comment_form = CommForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.published_date = timezone.now()
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
     else:
         comment_form = CommForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'comment': comment, 'comment_form': comment_form})

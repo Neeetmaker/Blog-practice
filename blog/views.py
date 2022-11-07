@@ -7,11 +7,11 @@ from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
 from .forms import CommForm
 from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
-
 
 
 # Код для комментариев ниже
@@ -32,7 +32,15 @@ def post_detail(request, pk):
         comment_form = CommForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'comment': comment, 'comment_form': comment_form})
 
+# Уод ддаление комментария
+
+def comm_delete(request, pk):
+    comment_delete = get_object_or_404(Comm, pk=pk)
+    comment_delete.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 # ------------------------
+
 
 def post_new(request):
     if request.method == "POST":

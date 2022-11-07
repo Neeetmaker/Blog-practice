@@ -22,6 +22,11 @@
            <div>{{ comment.author.get_full_name }} оставил комментарий:</div>
            <div>{{ comment.text }}</div>
            <div>{{ comment.published_date }}</div>
+           <br>
+           {% if request.user == comment.author %}
+           <a class="btn btn-default" href="{% url 'comm_delete' pk=comment.pk %}">Удалить</a>
+           {% endif %}
+           <br>
            <hr>
         {% endfor %}
     </div>

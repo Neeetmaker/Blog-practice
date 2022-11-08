@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
@@ -23,7 +23,7 @@ def post_detail(request, pk):
         comment_form = CommForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.post = Post.objects.get(pk=post.pk)
+            comment.post = post
             comment.author = request.user
             comment.published_date = timezone.now()
             comment.save()
@@ -32,15 +32,31 @@ def post_detail(request, pk):
         comment_form = CommForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'comment': comment, 'comment_form': comment_form})
 
-# Уод ддаление комментария
+# Код удаление комментария
 
 def comm_delete(request, pk):
     comment_delete = get_object_or_404(Comm, pk=pk)
     comment_delete.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-# ------------------------
+#Код редактирования коментария
 
+def comm_edit(request, pk):
+    comment_edit = get_object_or_404(Comm, pk=pk)
+    if request.method == "POST":
+        comment_form = CommForm(request.POST, instance=comment_edit)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = Post.objects.get(pk=post.pk)
+            comment.author = request.user
+            comment.published_date = timezone.now()
+            comment.save()
+            return redirect('post_detail', pk=comment.post.pk)
+    else:
+        comment_form = CommForm(instance=comment_edit)
+    return render(request, 'blog/comm_edit.html', {'comment_form': comment_form})
+
+# ------------------------
 
 def post_new(request):
     if request.method == "POST":

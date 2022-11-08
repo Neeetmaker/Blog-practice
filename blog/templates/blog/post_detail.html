@@ -14,7 +14,20 @@
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
 
-<!-- блоки для комметариев --> 
+<!-- блоки для комметариев -->
+
+<h2>Оставить комментарий</h2>
+
+{% if user.is_authenticated %}
+    <div>
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ comment_form }}
+                <button type="submit" class="save btn btn-default">Отправить</button>
+            </form>
+</div>
+{% else %}
+<div><h3>Чтобы оставить комментарий вам необходимо авторизоваться</h3></div>
+{% endif %}
 
     <div>
         <h2>Комментарии:</h2>
@@ -24,26 +37,12 @@
            <div>{{ comment.published_date }}</div>
            <br>
            {% if request.user == comment.author %}
+           <a class="btn btn-default" href="{% url 'comm_edit' pk=comment.pk %}">Редактировать</a>
            <a class="btn btn-default" href="{% url 'comm_delete' pk=comment.pk %}">Удалить</a>
            {% endif %}
            <br>
            <hr>
         {% endfor %}
     </div>
-    
-    <h2>Оставить комментарий</h2>
-
-{% if user.is_authenticated %}
-    <div>
-        <p>тут должна быть форма для комментарии</p>
-        <form method="POST" class="post-form">{% csrf_token %}
-            {{ comment_form }}
-            <button type="submit" class="save btn btn-default">Отправить</button>
-        </form>
-    </div>
-    {% else %}
-    <div><h3>Чтобы оставить комментарий вам необходимо авторизоваться</h3></div>
-{% endif %}
-
 {% endblock %}
 

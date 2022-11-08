@@ -47,7 +47,6 @@ def comm_edit(request, pk):
         comment_form = CommForm(request.POST, instance=comment_edit)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.post = Post.objects.get(pk=post.pk)
             comment.author = request.user
             comment.published_date = timezone.now()
             comment.save()

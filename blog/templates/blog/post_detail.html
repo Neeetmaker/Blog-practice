@@ -7,7 +7,7 @@
                 {{ post.published_date }}
             </div>
         {% endif %}
-        {% if user.is_authenticated %}
+        {% if request.user == post.author %}
      <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 {% endif %}
         <h1>{{ post.title }}</h1>
@@ -17,7 +17,6 @@
 <!-- блоки для комметариев -->
 
 <h2>Оставить комментарий</h2>
-
 {% if user.is_authenticated %}
     <div>
             <form method="POST" class="post-form">{% csrf_token %}
@@ -31,14 +30,16 @@
 
     <div>
         <h2>Комментарии:</h2>
-        {% for comment in comment %}
-           <div>{{ comment.author.get_full_name }} оставил комментарий:</div>
-           <div>{{ comment.text }}</div>
-           <div>{{ comment.published_date }}</div>
+        {% for comments in comments %}
+           <div>{{ comments.author.get_full_name }} оставил комментарий:</div>
+           <div>{{ comments.text }}</div>
+           <div>{{ comments.published_date|timesince }}</div>
            <br>
-           {% if request.user == comment.author %}
-           <a class="btn btn-default" href="{% url 'comm_edit' pk=comment.pk %}">Редактировать</a>
-           <a class="btn btn-default" href="{% url 'comm_delete' pk=comment.pk %}">Удалить</a>
+           {% if request.user == comments.author %}
+           {% if comments.is_edittime_expired == True%}
+           <a class="btn btn-default" href="{% url 'comm_edit' pk=comments.pk %}">Редактировать</a>
+           {% endif %}
+           <a class="btn btn-default" href="{% url 'comm_delete' pk=comments.pk %}">Удалить</a>
            {% endif %}
            <br>
            <hr>

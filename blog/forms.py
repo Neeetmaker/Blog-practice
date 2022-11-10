@@ -1,6 +1,6 @@
 from django import forms
 from .models import Post
-from .models import Comm
+from .models import Commentary
 
 class PostForm(forms.ModelForm):
 
@@ -13,8 +13,8 @@ class PostForm(forms.ModelForm):
 
 # Код для комментариев ниже
 
-class CommForm(forms.ModelForm):
+class CommentaryForm(forms.ModelForm):
 
     class Meta:
-        model = Comm
+        model = Commentary
         fields = ('text',)

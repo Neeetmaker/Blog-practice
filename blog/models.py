@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from datetime import datetime
+
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -22,9 +24,16 @@ class Post(models.Model):
 
 # Код для комментариев ниже
 
-class Comm(models.Model):
+class Commentary(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+
+    def is_edittime_expired(self):
+        edit_time = timedelta(minutes=30)
+        if timezone.now() - self.published_date() <= edit_time:
+            return True
+        else:
+            return False

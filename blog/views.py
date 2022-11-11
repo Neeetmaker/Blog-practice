@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from django.utils import timezone
 from .models import Post
@@ -29,7 +30,7 @@ def post_detail(request, pk):
             comments.save()
             return redirect('post_detail', pk=post.pk)
     else:
-        comment_form = CommentaryForm()
+        comment_form = CommentaryForm() 
     return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'comment_form': comment_form})
 
 # Код удаление комментария
@@ -43,20 +44,20 @@ def comm_delete(request, pk):
 
 def comm_edit(request, pk):
     comment_edit = get_object_or_404(Commentary, pk=pk)
-    #if comment_edit.is_edittime_expired == True:
-    if request.method == "POST": 
-        comment_form = CommentaryForm(request.POST, instance=comment_edit)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.author = request.user
-            comment.published_date = timezone.now()
-            comment.save()
-            return redirect('post_detail', pk=comment.post.pk)
+    if timezone.now() - comment_edit.created_date <= datetime.timedelta(minutes=30):
+        if request.method == "POST": 
+            comment_form = CommentaryForm(request.POST, instance=comment_edit)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.author = request.user
+                comment.published_date = timezone.now()
+                comment.save()
+                return redirect('post_detail', pk=comment.post.pk)
+        else:
+            comment_form = CommentaryForm(instance=comment_edit)
     else:
-        comment_form = CommentaryForm(instance=comment_edit)
-    #else:
-        #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    return render(request, 'blog/comm_edit.html', {'comment_form': comment_form})
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return render(request, 'blog/comm_edit.html', {'comment_form': comment_form, 'comment_edit': comment_edit})
 
 # ------------------------
 

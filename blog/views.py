@@ -10,11 +10,16 @@ from .forms import CommentaryForm
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from django.core.paginator import Paginator
 
+#Код пагинации в списке постов
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    posts_paginator = Paginator(posts, 3)
+    page_number = request.GET.get('page')
+    page_object = posts_paginator.get_page(page_number)
+    return render(request, 'blog/post_list.html', {'posts': page_object})
 
 
 # Код для комментариев ниже

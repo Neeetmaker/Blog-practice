@@ -20,5 +20,13 @@
 </div>
 {% endfor %}
 
+<nav>
+    <span>
+        {% for p in posts.paginator.page_range %}
+        <a href="?page={{ p }}">{{ p }}</a>
+        {% endfor %}
+    </span>
+</nav>
+
 {% endblock %}
         

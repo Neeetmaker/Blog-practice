@@ -9,8 +9,8 @@ from .forms import PostForm
 from .forms import CommentaryForm
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 
-# Вот это я хуйню сделал, пиздец
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
@@ -90,7 +90,19 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
 
-def author_list(request):
-    authors = User.objects.all()
-    commtest = Commentary.objects.all()
-    return render(request, 'blog/author_list.html', {'authors': authors, 'commtest': commtest})
+# Код профиля автора
+
+def author_detail(request, pk):
+    author = get_object_or_404(User, pk=pk)
+    author_posts = author.post_set.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    return render(request, 'blog/author_detail.html', {'author': author, 'author_posts': author_posts})
+
+# Код поиска по заголовку
+
+def search_results(request):
+    search_query = request.GET['search']
+    queryset = Post.objects.filter(
+        Q(title__icontains=search_query) | 
+        Q(text__icontains=search_query) | 
+        Q(author__username__icontains=search_query) , published_date__lte=timezone.now()).order_by('-published_date')
+    return render(request, 'blog/search_results.html', {'search_query': search_query ,'posts': queryset})

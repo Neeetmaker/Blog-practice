@@ -1,18 +1,24 @@
 {% extends 'blog/base.html' %}
-{% load static %}
-<html>
+
+{% block content %}
+
+<div class="post">
+    <form class="post-form" action="{% url 'search_results' %}">
+        <input type="text" name="search" method="GET">
+        <button type="submit" class="save btn btn-default">Опубликовать</button>
+    </form>
+</div>
+
+{% for post in posts %}
+<div class="post">
+    <div class="date">
+        <p>Опубликовано: {{ post.published_date|date }}</p>
+        <p><a href="{% url 'author_detail' pk=post.author.pk %}">Автор: {{ post.author }}</a></p>
+    </div>
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+    <p>{{ post.text|linebreaksbr }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}
         
-        {% block content %}
-                    {% for post in posts %}
-                        <div class="post">
-                            <div class="date">
-                                <p>Опубликовано: {{ post.published_date }}</p>
-                            </div>
-                            <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-                            <p>{{ post.text|linebreaksbr }}</p>
-                        </div>
-                    {% endfor %}
-        {% endblock %}
-        
-    </body>
-</html>

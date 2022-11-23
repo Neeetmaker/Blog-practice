@@ -26,6 +26,23 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+# Код счетчика просмотров
+
+    post.views_count = post.views_count + 1
+    post.save()
+
+# ======================
+
+# Код для блока с наиболее популярными постами
+
+    popular_posts = Post.objects.filter(views_count__gte=1)
+    #posts_paginator = Paginator(popular_posts, 3)
+    #page_number = request.GET.get('page')
+    #page_object = posts_paginator.get_page(page_number)
+
+# ============================================
+
     comments = post.commentary_set.filter(published_date__lte=timezone.now()).order_by('-published_date')
     if request.method == "POST":
         comment_form = CommentaryForm(request.POST)
@@ -38,7 +55,7 @@ def post_detail(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         comment_form = CommentaryForm() 
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'comment_form': comment_form})
+    return render(request, 'blog/post_detail.html', {'post': post, 'popular_posts': popular_posts, 'comments': comments, 'comment_form': comment_form})
 
 # Код удаление комментария
 

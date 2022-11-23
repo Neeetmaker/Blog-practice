@@ -15,6 +15,18 @@
     <p>{{ post.text|linebreaksbr }}</p>
 </div>
 
+<!-- Блоки для популярных постов -->
+
+<div class="post">
+    <h2>Другие популярные публикации:</h2>
+    {% for popular_post in popular_posts|slice:":3" %}
+    {% if popular_post.pk != post.pk %}
+    <h4><a href="{% url 'post_detail' pk=popular_post.pk %}">{{ popular_post.title }}</a></h4>
+    {{ popular_post.title }}
+    {% endif %}
+    {% endfor %}
+</div>
+
 <!-- Блоки для комметариев -->
 
 <h2>Оставить комментарий</h2>

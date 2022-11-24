@@ -1,7 +1,15 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <div class="post">
+
+
+
+{% endblock %}
+
+
+
+
+  <!--  <div class="post">
         {% if post.published_date %}
         <div class="date">
             <p>{{ post.published_date|date }}</p>
@@ -23,7 +31,6 @@
         {% endfor %}
     </div>
 
-<!-- Блоки для комметариев -->
 
 <h2>Оставить комментарий</h2>
 {% if user.is_authenticated %}
@@ -52,6 +59,5 @@
         <br>
         <hr>
         {% endfor %}
-</div>
-{% endblock %}
+</div>-->
 

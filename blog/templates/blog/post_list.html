@@ -2,32 +2,54 @@
 
 {% block content %}
 
-<div class="post">
-    <form class="post-form" action="{% url 'search_results' %}">
-        <input type="text" name="search" method="GET">
-        <button type="submit" class="save btn btn-default">Поиск</button>
-    </form>
-</div>
+    <section class="featured-posts">
+	    <div class="section-title">
+		    <h2><span>
+                <form class="form-inline my-2 my-lg-0" action="{% url 'search_results' %}">
+                    <input class="form-control mr-sm-2" type="text" name="search" method="GET" placeholder="Поиск">
+                </form>
+            </span></h2>
+	</div>
 
-{% for post in posts %}
-<div class="post">
-    <div class="date">
-        <p>Опубликовано: {{ post.published_date|date }}</p>
-        <p><a href="{% url 'author_detail' pk=post.author.pk %}">Автор: {{ post.author }}</a></p>
-        <p>Просмотры: {{ post.views_count }}</p>
-    </div>
-    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-    <p>{{ post.text|linebreaksbr }}</p>
-</div>
-{% endfor %}
+    {% for post in posts %}
+        <div class="card-columns listfeaturedtag">
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-5 wrapthumbnail">
+                        <a href="post.html">
+                            <div class="thumbnail" style="background-image:url(static/img/demopic/1.jpg);">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-block">
+                            <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                            <h4 class="card-text">{{ post.text|linebreaksbr|slice:150 }}...</h4>
+                            <div class="metafooter">
+                                <div class="wrapfooter">
+                                    <span class="author-meta">
+                                    <span class="post-name"><a href="{% url 'author_detail' pk=post.author.pk %}">{{ post.author }}</a></span><br/>
+                                    <span class="post-date">{{ post.published_date|date }}</span>
+                                    </span>
+                                    <span class="post-read-more">{{ post.views_count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
-<nav>
-    <span>
-        {% for p in posts.paginator.page_range %}
-        <a href="?page={{ p }}">{{ p }}</a>
-        {% endfor %}
-    </span>
-</nav>
+    <nav class="card-columns listfeaturedtag">
+        <span>
+            <h2 class="card-title">
+                {% for p in posts.paginator.page_range %}
+                    <a href="?page={{ p }}">{{ p }}</a>
+                {% endfor %}
+            </h2>   
+        </span>
+    </nav>
 
 {% endblock %}
         

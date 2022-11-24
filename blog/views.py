@@ -36,10 +36,7 @@ def post_detail(request, pk):
 
 # Код для блока с наиболее популярными постами
 
-    popular_posts = Post.objects.filter(views_count__gte=1)
-    #posts_paginator = Paginator(popular_posts, 3)
-    #page_number = request.GET.get('page')
-    #page_object = posts_paginator.get_page(page_number)
+    popular_posts = Post.objects.exclude(pk=post.pk , views_count__gte=1).order_by("-views_count")[:3]
 
 # ============================================
 

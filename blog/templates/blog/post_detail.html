@@ -1,31 +1,27 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<div class="post">
-    {% if post.published_date %}
-    <div class="date">
-    <p>{{ post.published_date|date }}</p>
-    <p><a href="{% url 'author_detail' pk=post.author.pk %}">Автор: {{ post.author }}</a></p>
+    <div class="post">
+        {% if post.published_date %}
+        <div class="date">
+            <p>{{ post.published_date|date }}</p>
+            <p><a href="{% url 'author_detail' pk=post.author.pk %}">Автор: {{ post.author }}</a></p>
+        </div>
+        {% endif %}
+        {% if request.user == post.author %}
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text|linebreaksbr }}</p>
     </div>
-    {% endif %}
-    {% if request.user == post.author %}
-    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-    {% endif %}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.text|linebreaksbr }}</p>
-</div>
 
-<!-- Блоки для популярных постов -->
 
-<div class="post">
-    <h2>Другие популярные публикации:</h2>
-    {% for popular_post in popular_posts|slice:":3" %}
-    {% if popular_post.pk != post.pk %}
-    <h4><a href="{% url 'post_detail' pk=popular_post.pk %}">{{ popular_post.title }}</a></h4>
-    {{ popular_post.title }}
-    {% endif %}
-    {% endfor %}
-</div>
+    <div class="post">
+        <h2>Другие популярные публикации:</h2>
+        {% for popular_post in popular_posts %}
+            <h4><a href="{% url 'post_detail' pk=popular_post.pk %}">{{ popular_post.title }}</a></h4>
+        {% endfor %}
+    </div>
 
 <!-- Блоки для комметариев -->
 

@@ -2,14 +2,34 @@
 
 {% block content %}
 
-<div class="post">
+<div class="graybg">   
     <h2>{{ author}}</h2>
     <h4>{{ author.get_full_name }}</h4>
     <h4>{{ author.email }}</h4>
 </div>
 
-<div class="post">
-    <h2>Публикации автора:</h2>
+{% for post in author_posts %}
+    <div class="card-columns listfeaturedtag">
+        <div class="card">
+            <div class="row">                    
+                <div class="card-block">
+                    <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                    <h4 class="card-text">{{ post.text|linebreaksbr }}</h4>                            
+                    <div class="metafooter">
+                        <div class="wrapfooter">
+                            <span class="post-name"><a href="{% url 'author_detail' pk=post.author.pk %}">{{ post.author }}</a></span><br/>
+                            <span class="post-date">{{ post.published_date|date }}</span>
+                            <span class="post-read-more">Просмотры: {{ post.views_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<!-- <div class="post">
+    <h2 class="card-title">Публикации автора:</h2>
     {% for post in author_posts %}
     <div class="post">
         <div class="date">
@@ -19,6 +39,6 @@
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
     {% endfor %}
-</div>
+</div> -->
 
 {% endblock %}

@@ -1,7 +1,38 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<div><h2>Вот что мы нашли по вашему запросу: "{{ search_query }}"</h2></div>
+
+<h2 class="card-title">Вот что мы нашли по вашему запросу: "{{ search_query }}"</h2>
+
+{% if posts and search_query %}
+    {% for post in posts %} 
+        <div class="card-columns listfeaturedtag">
+            <div class="card">
+                <div class="row">                    
+                    <div class="card-block">
+                        <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                        <h4 class="card-text">{{ post.text|linebreaksbr|slice:250 }}...</h4>                            
+                            <div class="metafooter">
+                                <div class="wrapfooter">
+                                <span class="post-name"><a href="{% url 'author_detail' pk=post.author.pk %}">{{ post.author }}</a></span><br/>
+                                <span class="post-date">{{ post.published_date|date }}</span>
+                                <span class="post-read-more">Просмотры: {{ post.views_count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <h4 class="lead">По вашему запросу ничего не найдено</h4>
+{% endif %}
+
+
+<!--<div class="card-columns listfeaturedtag">
+    <div class="card">
+        <div class="row">                    
+            <div class="card-block">
 <div>
     {% if posts and search_query %}
     {% for post in posts %} 
@@ -9,7 +40,7 @@
         <div class="date">
             <p>Опубликовано: {{ post.published_date|date }}</p>
         </div>
-        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+        <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1></h2>
         <p><a href="{% url 'author_detail' pk=post.author.pk %}">Автор: {{ post.author }}</a></p>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
@@ -18,5 +49,9 @@
     <p>По вашему запросу ничего не найдено</p>
     {% endif %}
 </div>
+            </div></div></div></div>-->
+
+
+
 {% endblock %}
 

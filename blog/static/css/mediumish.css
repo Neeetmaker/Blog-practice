@@ -59,7 +59,7 @@ section {
 .listfeaturedtag .card {
 	border:1px solid rgba(0,0,0,.1);
 	border-radius:2px;
-	height:260px;
+	height: auto;
 	padding-left:0;
 	margin-bottom:15px;
 }
@@ -72,7 +72,7 @@ section {
 	border-top-left-radius:2px;
 }
 .listfeaturedtag .card-block {
-	padding-left:0;
+	padding-left: 30px;
 }
 .listfeaturedtag h2.card-title,.listrecent h2.card-title {
 	font-size:1.3rem;
@@ -97,11 +97,13 @@ section {
 	bottom:20px;
 	font-size:12px;
 	display:block;
-	width:85%;
+	width:95%;
 }
 .listrecent .wrapfooter {
 	font-size:12px;
-	margin-top:30px;
+	margin-bottom:15px;
+	position:absolute;
+	bottom:0;
 }
 .author-thumb {
 	width:40px;
@@ -155,7 +157,7 @@ span.post-name a,span.post-read-more a:hover {
 	color:rgba(0,0,0,.8);
 }
 .dot:after {
-	content:"·";
+	content:"|";
 	margin-left:3px;
 	margin-right:3px;
 }
@@ -369,6 +371,17 @@ ul.tags li a:hover {
 	font-weight:600;
 	text-transform:uppercase;
 }
+.btn.default {
+	background-color:#1C9963;
+	border-color:#1C9963;
+	color:rgba(255,255,255,1);
+	fill:rgba(255,255,255,1);
+	border-radius:30px;
+	font-size:0.85rem;
+	margin-left:10px;
+	font-weight:600;
+	text-transform:uppercase;
+}
 .post-top-meta .btn.follow {
 	margin-left:5px;
 	margin-top:-4px;
@@ -440,4 +453,7 @@ ul.tags li a:hover {
 	line-height:22px;
 	border-radius:50%;
 	font-size:12px;
+}
+.post-form textarea, .post-form input {
+    width: 800px;
 }

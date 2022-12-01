@@ -6,11 +6,11 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="static/img/favicon.ico">
-        <title>Mediumish - A Medium style template by WowThemes.net</title>
-        <link href="static/css/bootstrap.min.css" rel="stylesheet">
+        <title>Neeetmk's blog</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
-        <link href="static/css/mediumish.css" rel="stylesheet">
+        <link href="{% static 'css/mediumish.css' %}" rel="stylesheet">
     </head>
     <body>
 
@@ -20,16 +20,26 @@
         </button>
         <div class="container">        
             <a class="navbar-brand" href="/">
-                <img src="static/img/logo.png" alt="logo">
-            </a>        
-        </div>
+                <h2>NZ</h2>
+                <!-- <img src="/static/img/logo.png" alt="logo"> -->
+            </a>
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                {% if user.is_authenticated %}
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'post_new' %}">Добавить публикацию <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>        
+        </div>  
     </nav>
 
     <div class="container">
 	    <div class="mainheading">
-		    <h1 class="sitetitle">Mediumish</h1>
+		    <h1 class="sitetitle">Neeetmaker's blog</h1>
 		    <p class="lead">
-                Bootstrap theme, medium style, simply perfect for bloggers
+                Корявый блог для корявых людей
 		    </p>
 	    </div>
             {% block content %}

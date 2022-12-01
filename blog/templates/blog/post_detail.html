@@ -1,9 +1,90 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+    <div class="container">
+        <div class="col-md-12 col-md-offset-2 col-xs-12">     
+            <h1 class="posttitle">{{ post.title }}</h1>
+            <div class="article-post">
+                <p>{{ post.text|linebreaksbr }}</p>
+            </div>
+                <div class="mainheading">
+                    <div class="card-columns listfeaturedtag">
+                        <h2 class="card-title">  
+                            <a class="link-dark" href="{% url 'author_detail' pk=post.author.pk %}">{{ post.author }}</a> 
+                        </h2>
+                    </div>
+                    {% if request.user == post.author %}
+                    <a class="link-dark" href="{% url 'post_edit' pk=post.pk %}"><span class="post-read-more">Редактировать</span></a>
+                    {% endif %}
+                    <div class="post-date">{{ post.published_date|date }}</div>
+                    
+            </div>
+        </div>
+    </div>
 
+    <div class="graybg">
+	    <div class="container">
+		    <div class="row listrecent listrelated">
+                {% for popular_post in popular_posts %}	
+			        <div class="col-md-4">
+				        <div class="card">
+					        <div class="card-block2">
+						    <h2 class="card-title"><a href="{% url 'post_detail' pk=popular_post.pk %}">{{ popular_post.title }}</a></h2>
+							        <div class="wrapfooter">
+								        <span class="author-meta">
+								        <span class="post-name"><a href="author.html">{{ popular_post.author }}</a></span><br/>
+								        <span class="post-date">{{ popular_post.published_date|date }}</span>						        
+							        </div>
+					        </div>
+				        </div>
+			        </div>
+			    {% endfor %}
+		    </div>
+	    </div>
+    </div>
 
+    {% if user.is_authenticated %}       
+        <h2 class="card-title">Оставьте комментарий:</h2>
+        <div class="container">  
+            <div class="row listrecent listrelated">
+                <div class="col-md-4">
+                    <div class="col-md-8 col-md-offset-2 col-xs-12"> 
+                        <form class="post-form textarea" method="POST">{% csrf_token %}
+                            {{ comment_form }}
+                            <button type="submit" class="save btn2 btn-default button">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="graybg">      
+                <h2>Чтобы оставить комментарий - авторизуйтесь</h2>
+        </div>
+    {% endif %}
 
+    {% for comments in comments %}
+        <div class="container">
+            <div class="card-columns listfeaturedtag">
+                <div class="card">
+                    <div class="row">                    
+                        <div class="card-block">        
+                            <h4 class="card-text">{{ comments.text }}</h4>
+                            <div class="metafooter">
+                                <div class="wrapfooter">
+                                    <span class="post-name "><a href="{% url 'author_detail' pk=post.author.pk %}">{{ comments.author.get_full_name }}</a></span><br/>
+                                    <span class="post-date">{{ comments.created_date|timesince }}</span>
+                                    <a class="link-dark" href="{% url 'comm_delete' pk=comments.pk %}"><span class="post-read-more">Удалить</span></a>
+                                    <span class="post-read-more"><span class="dot"></span></span>
+                                    <a class="link-dark" href="{% url 'comm_edit' pk=comments.pk %}"><span class="post-read-more">Редактировать</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    {% endfor %}
 {% endblock %}
 
 

@@ -12,33 +12,23 @@
 	</div>
 
     {% for post in posts %}
-        <div class="card-columns listfeaturedtag">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-5 wrapthumbnail">
-                        <a href="post.html">
-                            <div class="thumbnail" style="background-image:url(static/img/demopic/1.jpg);">
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-7">
+            <div class="card-columns listfeaturedtag">
+                <div class="card">
+                    <div class="row">                    
                         <div class="card-block">
                             <h2 class="card-title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-                            <h4 class="card-text">{{ post.text|linebreaksbr|slice:150 }}...</h4>
+                            <h4 class="card-text">{{ post.text|linebreaksbr }}</h4>                            
                             <div class="metafooter">
                                 <div class="wrapfooter">
-                                    <span class="author-meta">
                                     <span class="post-name"><a href="{% url 'author_detail' pk=post.author.pk %}">{{ post.author }}</a></span><br/>
                                     <span class="post-date">{{ post.published_date|date }}</span>
-                                    </span>
-                                    <span class="post-read-more">{{ post.views_count }}</span>
+                                    <span class="post-read-more">Просмотры: {{ post.views_count }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     {% endfor %}
 
     <nav class="card-columns listfeaturedtag">

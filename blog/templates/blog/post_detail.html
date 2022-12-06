@@ -74,9 +74,13 @@
                                 <div class="wrapfooter">
                                     <span class="post-name "><a href="{% url 'author_detail' pk=post.author.pk %}">{{ comments.author.get_full_name }}</a></span><br/>
                                     <span class="post-date">{{ comments.created_date|timesince }}</span>
+                                    {% if request.user == comments.author %}
+                                    {% if comments.edit_time_expired %}
                                     <a class="link-dark" href="{% url 'comm_delete' pk=comments.pk %}"><span class="post-read-more">Удалить</span></a>
                                     <span class="post-read-more"><span class="dot"></span></span>
                                     <a class="link-dark" href="{% url 'comm_edit' pk=comments.pk %}"><span class="post-read-more">Редактировать</span></a>
+                                    {% endif %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

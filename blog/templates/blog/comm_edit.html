@@ -1,19 +1,18 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<div class="content container">
-    <div class="row">
-        <div class="col-md-8">
-            <h1>Редактирование комментария</h1>
-            {% if comment_edit.edit_time_expired %}
-            <form method="POST" class="post-form">{% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit" class="save btn btn-default">Изменить</button>
-            {% else %}
-            <p>Время вышло</p>
-            {% endif %}
-            </form>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% if comment_edit.edit_time_expired %}
+                <form method="POST" class="post-form">{% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="save btn btn-default">Изменить</button>
+                {% else %}
+                <p>Время вышло</p>
+                {% endif %}
+                </form>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
